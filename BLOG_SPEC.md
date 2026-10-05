@@ -9,30 +9,27 @@ This document describes the current Jekyll site after the rebuild and refinement
 
 ## Layouts
 
-- `default` — HTML shell with skip link, canonical URL, Open Graph / Twitter meta, JSON-LD (WebSite for pages, BlogPosting for posts), RSS link, header nav (Blog, About, CRT toggle, Theme switcher, Shortcuts modal), footer with RSS and privacy note. Includes toggleable CRT scanline overlay, the locally sourced Joy Division pulsar SVG controller (`assets/js/pulsar-waves.js`), and retro games/audio synth engine (`assets/js/terminal-games.js`).
-- `home` — terminal article (window dots for close/minimize/maximize fullscreen workstation mode, Joy Division PSR B1919+21 pulsar SVG that progressively stacks its lines once per activation, banner, boot sequence decor), whoami / interests / about, ls navigation, accessible visitor CLI with playable retro mini-games (`snake`, `pong`, `hack`), rich Unix utilities (`solaris`, `cde`, `waves`, `crt`, `sound`, `cowsay`, `fortune`, `dmesg`, `cal`, `uname`), noscript fallback, plus "Latest note" section.
+- `default` — HTML shell with skip link, canonical URL, Open Graph / Twitter meta, JSON-LD (WebSite for pages, BlogPosting for posts), RSS link, header nav (Blog, About, Terminal, RSS, Theme toggle), footer with RSS and privacy note. Theme choice (light/dark) is stored in localStorage and can be forced with a `?theme=` query parameter.
+- `home` — short intro, latest notes list (eight newest, with reading time and tags), an about-this-site block, and a link to the terminal view. The interactive terminal moved to `/terminal/` in the 19fa9ab rebuild; the homepage is plain HTML/CSS.
 - `post` — title, meta (date, reading time, author), tags, progressive TOC from h2/h3 (hidden until JS populates; dedupes slugs, handles empty slugs, hidden via `<noscript>` when JS disabled), content, code copy buttons, post nav (Back to blog + Home + next/previous).
 - `page` — title, content, nav (Back to home, Blog).
-- `404.html` — terminal-styled not-found with links home/blog.
+- `404.html` — styled not-found page with links home/blog.
 
 ## Content
 
-- `index.md` — layout home (terminal + progressively stacked pulsar waves + games + latest).
+- `index.md` — layout home (intro + latest notes list + about-this-site block).
+- `terminal.md` — `/terminal/` standalone interactive terminal: visitor CLI (`ls`, `cat`, `posts`, `read`, `tags`, `links`, `whoami`, `neofetch`, `theme green|amber|white`, `crt on|off`, `pulsar`, `banner`, `history`, `clear`), tab completion, command history, and ASCII art. Requires JavaScript; noscript fallback links to `/blog/`.
 - `blog.md` — `/blog/` with lead, interactive tag filtering, post cards (title, date, reading time, tags, excerpt, CTA). Empty state kept.
 - `about.md` — `/about/` standalone about page; `#about` anchor still exists on home for deep link.
-- `_posts/` — five published posts: agent access revocation, 4B vs 23B on the 3060, local 8B vs Jev, the SAST setup on SonarQube, and Dart rules for SonarQube Community.
+- `_posts/` — five published posts: what happens when I revoke an agent's access, 4B vs 23B on the 3060, can my local 8B do what Jev does, building a SAST setup on top of SonarQube, and Dart security rules for SonarQube Community.
 - `_drafts/next-article-template.md` — working template retained.
 
-## Design & Retro Aesthetics
+## Design & Aesthetics
 
-- Dark retro terminal & Unix themes: `default`, `solaris` (Sun CDE workstation), `pulsar` (stark Joy Division monochrome), `matrix` (phosphor green), `amber` (warm CRT amber), `cyber` (neon cyberpunk), and `monochrome` (silver/black).
-- Joy Division *Unknown Pleasures* (PSR B1919+21) stacked radio frequency wave SVG with a one-shot top-to-bottom reveal, replayed on activation and shown immediately for reduced-motion users.
-- Authentic CRT display mode: Scanline raster overlay, phosphor text bloom, tube vignette curvature, degauss flash animation, toggleable via `c` key or `crt` command.
-- In-terminal 8-bit games: `snake` (high score tracking), `pong` (1P vs CPU paddle match), `hack` (memory cipher decryption).
-- Web Audio API synthesizer for retro mechanical keyclicks, degauss hum, game score chimes, and beeps (opt-in / toggleable via `sound on`).
-- Body monospace globally; `.post-content` and `.page-content` use system sans-serif for readability.
+- Plain text first: light/dark themes on the page shell, phosphor-terminal styling (green/amber/white) and a CRT scanline texture (`crt on|off`) inside `/terminal/` only. The old Solaris/CDE, mono, matrix, amber, cyber, and monochrome full-page themes plus the homepage pulsar SVG, mini-games, and audio synth no longer exist after the 19fa9ab rebuild and were removed from the layouts.
+- Body uses a system sans-serif stack; the terminal page is monospace.
 - Decorative animations respect `prefers-reduced-motion: reduce`.
-- Touch targets: nav links 44px, input 44px, suggestion buttons 32px, visible focus outlines.
+- Touch targets: nav links 44px, input 44px, visible focus outlines.
 
 ## Constraints honored
 
@@ -43,5 +40,5 @@ This document describes the current Jekyll site after the rebuild and refinement
 ## Verification
 
 - `bundle exec jekyll build` where Ruby available; otherwise inspect front matter and generated HTML for one h1 per page, canonical/OG tags, valid internal links. No local Ruby/Jekyll required — GitHub Actions (`actions/jekyll-build-pages@v1`) is the authoritative build on push to `main`.
-- Manual checks: keyboard nav (`g h`, `g b`, `g a`, `c`, `w`, `f`, `t`, `?`, `/`), reduced-motion, no-JS fallback, mobile at 320/375/414/768.
+- Manual checks: terminal keyboard nav (Enter, Tab completion, history, Ctrl+L, Escape), reduced-motion, no-JS fallback, mobile at 320/375/414/768.
 - Ignored: `session-*.md`, `_site/`, `.jekyll-cache/`, `.bundle/`, `vendor/` (see `.gitignore`).
